@@ -5,20 +5,25 @@ using UnityEngine;
 public class dongle : MonoBehaviour
 {
     public GameManager manager;
+    public ParticleSystem effect;
     public bool isMerge;
     public int level;
     public bool isDrag;
+    public bool isAttach;
+   
     CircleCollider2D circle;
-    Rigidbody2D rigid;
+    public Rigidbody2D rigid;
     Animator anim;
-    
-
+    SpriteRenderer spriteRenderer;
+    float deadtime;
 
     void Awake()
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         circle = GetComponent<CircleCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
     void OnEnable()
     {
@@ -60,6 +65,24 @@ public class dongle : MonoBehaviour
         isDrag = false;
         rigid.simulated = true;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        StartCoroutine(AttachRoutine());
+       
+    }
+
+    IEnumerator AttachRoutine()
+    {
+        if (isAttach)
+        {
+            yield break;
+        }
+        isAttach = true;
+        manager.SfxPlay(GameManager.Sfx.Attach);
+        yield return new WaitForSeconds(0.2f);
+        isAttach = false;
+    }
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Dongle")
@@ -85,6 +108,10 @@ public class dongle : MonoBehaviour
         isMerge = true;
         rigid.simulated = false;
         circle.enabled = false;
+        if(targetPos == Vector3.up * 100)
+        {
+            EffectPlay();
+        }
         StartCoroutine(HideRoutine(targetPos));
 
     }
@@ -95,9 +122,18 @@ public class dongle : MonoBehaviour
         while (frameCount < 20)
         {
             frameCount++;
+            if(targetPos != Vector3.up * 100)
+            {
             transform.position = Vector3.Lerp(transform.position, targetPos, 0.5f);
+            }
+            else if(targetPos == Vector3.up * 100)
+            {
+                transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 0.2f);
+            }
+
             yield return null;
         }
+        manager.score += (int)Mathf.Pow(2, level);
         isMerge = false;
         gameObject.SetActive(false);
 
@@ -114,11 +150,45 @@ public class dongle : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         anim.SetInteger("Level", level + 1);
+        EffectPlay();
+        manager.SfxPlay(GameManager.Sfx.LevelUp);
         yield return new WaitForSeconds(0.3f);
         level++;
         manager.maxlevel = Mathf.Max(level, manager.maxlevel);
         isMerge = false;
          
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.tag == "Finish")
+        {
+            deadtime += Time.deltaTime;
+
+            if(deadtime > 2)
+            {
+                spriteRenderer.color = new Color(0.9f, 0.2f, 0, 2f);
+            }
+            if (deadtime > 5)
+            {
+                manager.GameOver();
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.tag == "Finish")
+        {
+            deadtime = 0;
+            spriteRenderer.color = Color.white;
+        }
+    }
+    void EffectPlay()
+    {
+        effect.transform.position = transform.position;
+        effect.transform.localScale = transform.localScale;
+        effect.Play();
+
     }
 
 }
