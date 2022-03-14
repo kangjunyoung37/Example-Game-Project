@@ -1,45 +1,102 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     
-    public dongle lastdongle;
+    [Header("------------[ Core ]")]
+    public int maxlevel;
+    public int score;
+    public bool isOver;
+    [Header("------------[ Object Pooling ]")]
     public GameObject donglePrefab;
     public Transform dongleGroup;
+    public List<dongle> donglepool;
     public GameObject effectPrefab;
     public Transform effectGroup;
+    public List<ParticleSystem> effectpool;
+    [Range(1,30)]
+    public int poolSize;
+    public int poolCursor;
+    public dongle lastdongle;
+    [Header("------------[ Audio ]")]
     public AudioSource bgmPlayer;
     public AudioSource[] sfxPlayer;
     public AudioClip[] sfxClip;
     public enum Sfx {LevelUp,Next,Attach,Button,Over};
     int sfxCursor;
+    [Header("------------[ UI ]")]
+    public GameObject endgroup;
+    public GameObject startgroup;
+    public Text scoreText;
+    public Text maxScoreText;
+    public Text subScoreText;
 
-    public int maxlevel;
-    public int score;
-    public bool isOver;
+    [Header("------------[ ETC ]")]
+    public GameObject line;
+    public GameObject bottom;
+
 
     void Awake()
     {
-        Application.targetFrameRate = 60; 
+        Application.targetFrameRate = 60;
+        donglepool = new List<dongle>();
+        effectpool = new List<ParticleSystem>();
+        for (int index = 0; index < poolSize; index++)
+        {
+            MakeDongle();
+        }
+        if (!PlayerPrefs.HasKey("MaxScore"))
+        {
+            PlayerPrefs.SetInt("MaxScore", 0);
+        }
+        maxScoreText.text = PlayerPrefs.GetInt("MaxScore").ToString();
     }
 
-    void Start()
+    public void GameStart()
     {
+        line.SetActive(true);
+        bottom.SetActive(true);
+        scoreText.gameObject.SetActive(true);
+        maxScoreText.gameObject.SetActive(true);
+        startgroup.SetActive(false);
+       
         bgmPlayer.Play();
-        NextDongle();
+        SfxPlay(Sfx.Button);
+        Invoke("NextDongle", 1.5f);
+
+    }
+
+    dongle MakeDongle()
+    {
+        GameObject instantEffectObj = Instantiate(effectPrefab, effectGroup);
+        instantEffectObj.name = "Effect" + effectpool.Count;
+        ParticleSystem instantEffect = instantEffectObj.GetComponent<ParticleSystem>();
+        effectpool.Add(instantEffect);
+
+        GameObject instantDongleObj = Instantiate(donglePrefab, dongleGroup);
+        instantDongleObj.name = "dongle" + donglepool.Count;
+        dongle instantdongle = instantDongleObj.GetComponent<dongle>();
+        instantdongle.manager = this;
+        instantdongle.effect = instantEffect;
+        donglepool.Add(instantdongle);
+        return instantdongle;
     }
     dongle GetDongle()
     {
-        GameObject instantEffectObj = Instantiate(effectPrefab, effectGroup);
-        ParticleSystem instantEffect= instantEffectObj.GetComponent<ParticleSystem>();
 
-        GameObject instantDongleObj = Instantiate(donglePrefab, dongleGroup);
-        dongle instantdongle = instantDongleObj.GetComponent<dongle>();
-        instantdongle.effect = instantEffect;
-        return instantdongle;
-
+        for(int index=0; index < donglepool.Count; index++)
+        {
+            poolCursor = (poolCursor + 1) % donglepool.Count;
+            if (!donglepool[poolCursor].gameObject.activeSelf)
+            {
+                return donglepool[poolCursor];
+            }
+        }
+        return MakeDongle();
     }
     void NextDongle()
     {
@@ -47,9 +104,8 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        dongle newDongle = GetDongle();
-        lastdongle = newDongle;
-        lastdongle.manager = this;
+
+        lastdongle = GetDongle();
         lastdongle.level = Random.Range(0, maxlevel);
         lastdongle.gameObject.SetActive(true);
         SfxPlay(Sfx.Next);
@@ -106,7 +162,26 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
+
+        int maxScore = Mathf.Max(score, PlayerPrefs.GetInt("MaxScore"));
+        PlayerPrefs.SetInt("MaxScore", maxScore);
+
+        endgroup.SetActive(true);
+        subScoreText.text = "Á¡¼ö : "+scoreText.text;
+        bgmPlayer.Stop();
         SfxPlay(Sfx.Over);
+    }
+
+    public void Reset()
+    {
+        SfxPlay(Sfx.Button);
+        StartCoroutine(ResetCoroutine());
+
+    }
+    IEnumerator ResetCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Main");
     }
 
     public void SfxPlay(Sfx type)
@@ -134,5 +209,16 @@ public class GameManager : MonoBehaviour
         }
         sfxPlayer[sfxCursor].Play();
         sfxCursor = (sfxCursor + 1) % sfxPlayer.Length;
+    }
+    void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            Application.Quit();
+        } 
+    }
+    void LateUpdate()
+    {
+        scoreText.text = score.ToString();
     }
 }
