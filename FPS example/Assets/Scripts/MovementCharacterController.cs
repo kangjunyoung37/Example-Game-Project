@@ -15,6 +15,11 @@ public class MovementCharacterController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
     }
+    public float MoveSpeed
+    {
+        set => moveSpeed = Mathf.Max(0, value);
+        get => moveSpeed;
+    }
 
     private void Update()
     {
