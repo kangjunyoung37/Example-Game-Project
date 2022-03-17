@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     [Header("Input KeyCodes")]
     [SerializeField]
     private KeyCode keyCodeRun = KeyCode.LeftShift;
+    [SerializeField]
+    private KeyCode keyCodeJump = KeyCode.Space;
 
     [Header("Audio Clips")]
     [SerializeField]
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         UpdateRotate();
         UpdateMove();
+        UpdateJump();
     }
     private void UpdateRotate()
     {
@@ -75,5 +78,12 @@ public class PlayerController : MonoBehaviour
         movement.MoveTo(new Vector3(x, 0, z));
 
 
+    }
+    private void UpdateJump()
+    {
+        if(Input.GetKey(keyCodeJump))
+        {
+            movement.Jump();
+        }
     }
 }
