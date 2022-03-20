@@ -8,11 +8,17 @@ public class WeaponAssaultRiffle : MonoBehaviour
     [Header("Audio Clips")]
     [SerializeField]
     public AudioClip audioClipTakeOutWeapon;
+    [SerializeField]
+    public AudioClip audioClipFire;
 
     [Header("Weapon Setting")]
     [SerializeField]
     private WeaponSetting weaponSetting;
-    
+
+    [Header("Fire Effect")]
+    [SerializeField]
+    private GameObject muzzleFlashEffect;
+
     private float lastAttackTime = 0;
     
     private AudioSource audioSource;
@@ -28,6 +34,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
     private void OnEnable()
     {
         PlaySound(audioClipTakeOutWeapon);
+        muzzleFlashEffect.SetActive(false);
     }
 
     // Update is called once per frame
@@ -78,6 +85,14 @@ public class WeaponAssaultRiffle : MonoBehaviour
             }
             lastAttackTime = Time.time;
             animator.Play("Fire", -1, 0);
+            StartCoroutine("OnMuzzleFlashEffect");
+            PlaySound(audioClipFire);
         }
+    }
+    IEnumerator OnMuzzleFlashEffect()
+    {
+        muzzleFlashEffect.SetActive(true);
+        yield return new WaitForSeconds(weaponSetting.attackRate*0.3f);
+        muzzleFlashEffect.SetActive(false);
     }
 }
