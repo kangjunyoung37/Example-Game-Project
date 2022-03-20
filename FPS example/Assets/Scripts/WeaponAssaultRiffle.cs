@@ -15,6 +15,10 @@ public class WeaponAssaultRiffle : MonoBehaviour
     [SerializeField]
     private WeaponSetting weaponSetting;
 
+    [Header("Spawn Points")]
+    [SerializeField]
+    private Transform casingSpawnPoint;
+
     [Header("Fire Effect")]
     [SerializeField]
     private GameObject muzzleFlashEffect;
@@ -23,13 +27,13 @@ public class WeaponAssaultRiffle : MonoBehaviour
     
     private AudioSource audioSource;
     private PlayerAnimatorController animator;
-
+    private CasingMemoryPool casingMemoryPool;
 
     public void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInParent<PlayerAnimatorController>();
-
+        casingMemoryPool = GetComponent<CasingMemoryPool>();
     }
     private void OnEnable()
     {
@@ -87,6 +91,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
             animator.Play("Fire", -1, 0);
             StartCoroutine("OnMuzzleFlashEffect");
             PlaySound(audioClipFire);
+            casingMemoryPool.SpawnCasing(casingSpawnPoint.position, transform.right);
         }
     }
     IEnumerator OnMuzzleFlashEffect()
