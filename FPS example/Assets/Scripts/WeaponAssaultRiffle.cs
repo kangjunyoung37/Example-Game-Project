@@ -34,6 +34,8 @@ public class WeaponAssaultRiffle : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInParent<PlayerAnimatorController>();
         casingMemoryPool = GetComponent<CasingMemoryPool>();
+
+        weaponSetting.currentAmmo = weaponSetting.maxAmmo;
     }
     private void OnEnable()
     {
@@ -88,6 +90,11 @@ public class WeaponAssaultRiffle : MonoBehaviour
                 return;
             }
             lastAttackTime = Time.time;
+            if (weaponSetting.currentAmmo <= 0)
+            {
+                return;
+            }
+            weaponSetting.currentAmmo--;
             animator.Play("Fire", -1, 0);
             StartCoroutine("OnMuzzleFlashEffect");
             PlaySound(audioClipFire);
