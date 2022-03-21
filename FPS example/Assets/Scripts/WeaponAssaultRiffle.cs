@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[System.Serializable]
+public class AmmoEvent : UnityEngine.Events.UnityEvent<int, int> { }
 public class WeaponAssaultRiffle : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    [HideInInspector]
+    public AmmoEvent onAmmoEvnet = new AmmoEvent();
+
     [Header("Audio Clips")]
     [SerializeField]
     public AudioClip audioClipTakeOutWeapon;
@@ -29,6 +33,8 @@ public class WeaponAssaultRiffle : MonoBehaviour
     private PlayerAnimatorController animator;
     private CasingMemoryPool casingMemoryPool;
 
+    public WeaponName WeaponName => weaponSetting.weaponName;
+
     public void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -41,6 +47,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
     {
         PlaySound(audioClipTakeOutWeapon);
         muzzleFlashEffect.SetActive(false);
+        onAmmoEvnet.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
     }
 
     // Update is called once per frame
@@ -95,6 +102,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
                 return;
             }
             weaponSetting.currentAmmo--;
+            onAmmoEvnet.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
             animator.Play("Fire", -1, 0);
             StartCoroutine("OnMuzzleFlashEffect");
             PlaySound(audioClipFire);

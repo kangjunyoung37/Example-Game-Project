@@ -10,7 +10,6 @@ public class Casing : MonoBehaviour
     private float casingSpin = 1.0f;
     [SerializeField]
     private AudioClip[] audioClips;
-
     private Rigidbody rigidbody3D;
     private AudioSource audioSource;
     private MemoryPool memoryPool;
