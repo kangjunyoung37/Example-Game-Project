@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private KeyCode keyCodeRun = KeyCode.LeftShift;
     [SerializeField]
     private KeyCode keyCodeJump = KeyCode.Space;
+    [SerializeField]
+    private KeyCode keyCodeReload = KeyCode.R;
 
     [Header("Audio Clips")]
     [SerializeField]
@@ -98,6 +100,10 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             weapon.StopWeaponAction();
+        }
+        if (Input.GetKeyDown(keyCodeReload))
+        {
+            weapon.StartReload();
         }
     }
 }

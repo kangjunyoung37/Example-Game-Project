@@ -9,7 +9,11 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
     }
-    // Update is called once per frame
+
+    public void OnReload()
+    {
+        animator.SetTrigger("onReload");
+    }
     public float MoveSpeed
     {
         set => animator.SetFloat("movementSpeed", value);
@@ -18,5 +22,9 @@ public class PlayerAnimatorController : MonoBehaviour
     public void Play(string stateName, int layer, float normalizedTime)
     {
         animator.Play(stateName, layer, normalizedTime);
+    }
+    public bool CurrentAnimationIs(string name)
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName(name);
     }
 }

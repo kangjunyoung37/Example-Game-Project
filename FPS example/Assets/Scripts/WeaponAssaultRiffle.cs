@@ -14,6 +14,8 @@ public class WeaponAssaultRiffle : MonoBehaviour
     public AudioClip audioClipTakeOutWeapon;
     [SerializeField]
     public AudioClip audioClipFire;
+    [SerializeField]
+    private AudioClip audioClipReload;
 
     [Header("Weapon Setting")]
     [SerializeField]
@@ -23,12 +25,14 @@ public class WeaponAssaultRiffle : MonoBehaviour
     [SerializeField]
     private Transform casingSpawnPoint;
 
+
     [Header("Fire Effect")]
     [SerializeField]
     private GameObject muzzleFlashEffect;
 
     private float lastAttackTime = 0;
-    
+    private bool isReload = false;
+
     private AudioSource audioSource;
     private PlayerAnimatorController animator;
     private CasingMemoryPool casingMemoryPool;
@@ -60,6 +64,10 @@ public class WeaponAssaultRiffle : MonoBehaviour
     }
     public void StartWeaponAction(int type = 0)
     {
+        if (isReload == true)
+        {
+            return;
+        }
         if(type == 0)
         {
             if(weaponSetting.inAutomaticeAttack == true)
@@ -78,6 +86,13 @@ public class WeaponAssaultRiffle : MonoBehaviour
         {
             StopCoroutine("OnAttackLoop");
         }
+    }
+    public void StartReload()
+    {
+        if (isReload == true) return;
+
+        StopWeaponAction();
+        StartCoroutine("OnReload");
     }
     private IEnumerator OnAttackLoop()
     {
@@ -114,5 +129,24 @@ public class WeaponAssaultRiffle : MonoBehaviour
         muzzleFlashEffect.SetActive(true);
         yield return new WaitForSeconds(weaponSetting.attackRate*0.3f);
         muzzleFlashEffect.SetActive(false);
+    }
+    private IEnumerator OnReload()
+    {
+        isReload = true;
+        animator.OnReload();
+        PlaySound(audioClipReload);
+        while(true)
+        {
+            if(audioSource.isPlaying == false && animator.CurrentAnimationIs("Movement"))
+            {
+                isReload = false;
+
+                weaponSetting.currentAmmo = weaponSetting.maxAmmo;
+                onAmmoEvnet.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
+
+                yield break;
+            }
+            yield return null;
+        }
     }
 }
