@@ -19,7 +19,7 @@ public class ImpactMemoryPool : MonoBehaviour
     }
     public void SpawnImpack(RaycastHit hit)
     {
-        if (hit.transform.CompareTag("ImpactNomal"))
+        if (hit.transform.CompareTag("ImpactNormal"))
         {
             OnSpawnImpact(ImpactType.Normal, hit.point, Quaternion.LookRotation(hit.normal));
 
