@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 [System.Serializable]
 public class AmmoEvent : UnityEngine.Events.UnityEvent<int, int> { }
 [System.Serializable]
@@ -37,8 +38,16 @@ public class WeaponAssaultRiffle : MonoBehaviour
     [SerializeField]
     private GameObject muzzleFlashEffect;
 
+    [Header("Aim UI")]
+    [SerializeField]
+    private Image imageAim;
+
     private float lastAttackTime = 0;
     private bool isReload = false;
+    private bool isAttact = false;
+    private bool isModeChage = false;
+    private float defaultModeFOV = 103;
+    private float aimModeFOV = 30;
 
     private AudioSource audioSource;
     private PlayerAnimatorController animator;
@@ -66,6 +75,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
         muzzleFlashEffect.SetActive(false);
         onAmmoEvnet.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
         onMagazineEvent.Invoke(weaponSetting.currentMagazine);
+        ResetVariables();
     }
 
     // Update is called once per frame
@@ -78,14 +88,13 @@ public class WeaponAssaultRiffle : MonoBehaviour
     }
     public void StartWeaponAction(int type = 0)
     {
-        if (isReload == true)
-        {
-            return;
-        }
+        if (isReload == true) return;
+        if (isModeChage == true) return;
         if(type == 0)
         {
             if(weaponSetting.inAutomaticeAttack == true)
             {
+                isAttact = true;
                 StartCoroutine("OnAttackLoop");
             }
             else
@@ -93,11 +102,17 @@ public class WeaponAssaultRiffle : MonoBehaviour
                 OnAttack();
             }
         }
+        else
+        {
+            if (isAttact == true) return;
+            StartCoroutine("OnModeChange");
+        }
     }
     public void StopWeaponAction(int type = 0)
     {
         if(type == 0)
         {
+            isAttact = false;
             StopCoroutine("OnAttackLoop");
         }
     }
@@ -132,8 +147,9 @@ public class WeaponAssaultRiffle : MonoBehaviour
             }
             weaponSetting.currentAmmo--;
             onAmmoEvnet.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
-            animator.Play("Fire", -1, 0);
-            StartCoroutine("OnMuzzleFlashEffect");
+            string animation = animator.AimModeIs == true ? "AimFire" : "Fire";
+            animator.Play(animation, -1, 0);
+            if (animator.AimModeIs == false )StartCoroutine("OnMuzzleFlashEffect");
             PlaySound(audioClipFire);
             casingMemoryPool.SpawnCasing(casingSpawnPoint.position, transform.right);
             TwoStepRaycast();
@@ -189,5 +205,34 @@ public class WeaponAssaultRiffle : MonoBehaviour
             impackMemoryPool.SpawnImpack(hit);
         }
         Debug.DrawRay(bulletSpawnPoint.position,attackDirection*weaponSetting.attackDistance,Color.blue);
+    }
+    private IEnumerator OnModeChange()
+    {
+        float current = 0;
+        float percent = 0;
+        float time = 0.35f;
+
+        animator.AimModeIs = !animator.AimModeIs;
+        imageAim.enabled = !imageAim.enabled;
+
+        float start = mainCamera.fieldOfView;
+        float end = animator.AimModeIs == true ? aimModeFOV : defaultModeFOV;
+        isModeChage = true;
+
+        while (percent < 1)
+        {
+            current += Time.deltaTime;
+            percent = current / time;
+            mainCamera.fieldOfView = Mathf.Lerp(start, end, percent);
+
+            yield return null;
+        }
+        isModeChage = false;
+    }
+    private void ResetVariables()
+    {
+        isReload = false;
+        isAttact = false;
+        isModeChage = false;
     }
 }
