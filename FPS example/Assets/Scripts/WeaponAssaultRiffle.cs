@@ -46,7 +46,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
     private bool isReload = false;
     private bool isAttact = false;
     private bool isModeChage = false;
-    private float defaultModeFOV = 103;
+    private float defaultModeFOV = 60;
     private float aimModeFOV = 30;
 
     private AudioSource audioSource;
