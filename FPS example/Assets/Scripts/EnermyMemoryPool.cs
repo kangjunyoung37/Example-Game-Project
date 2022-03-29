@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnermyMemoryPool : MonoBehaviour
 {
     [SerializeField]
+    private Transform target;
+    [SerializeField]
     private GameObject enermySpawnPointPrefab;
     [SerializeField]
     private GameObject enermyPrefab;
@@ -58,6 +60,7 @@ public class EnermyMemoryPool : MonoBehaviour
         GameObject item = enermyMemoryPool.ActivatepoolItem();
         item.transform.position = point.transform.position;
 
+        item.GetComponent<EnermyFSM2>().Setup(target);
         spawnPointMemoryPool.DeactivatePoolItem(point);
     }
 

@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 416d305a8ae5ce742808195ee6a00d73, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 19bb1fa1f20488947a4da8a8335a3d33, type: 2}
 --- !u!1 &30661861 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100012, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
@@ -1066,7 +1066,7 @@ GameObject:
   m_TagString: ImpactNormal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &499939834
 Transform:
@@ -1160,7 +1160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &562173095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1173,6 +1173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d0fd4c63c0968e41af6c8ddbd883a46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 72385728}
   enermySpawnPointPrefab: {fileID: 3004311321267122787, guid: 6cd7baefb4f0e054fa084d1efbec5f50, type: 3}
   enermyPrefab: {fileID: 1203518696428620395, guid: c060c5db63dc26b4cb8672d38c6a53a2, type: 3}
   enermySpawnTime: 1
@@ -1474,7 +1475,7 @@ GameObject:
   m_TagString: ImpactObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &937162344
 Transform:
@@ -1652,7 +1653,7 @@ GameObject:
   m_TagString: ImpactNormal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1002352129
 Transform:
@@ -1992,7 +1993,7 @@ GameObject:
   m_TagString: ImpactNormal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1452524627
 Transform:
@@ -2087,7 +2088,7 @@ GameObject:
   m_TagString: ImpactNormal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1552863988
 Transform:
@@ -2328,7 +2329,7 @@ GameObject:
   m_TagString: ImpactNormal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1721525643
 Transform:
