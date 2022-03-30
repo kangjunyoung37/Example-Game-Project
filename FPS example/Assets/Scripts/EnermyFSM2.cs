@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EnermyState { None = -1 , Idle = 0, Wander,Pursuit,}
+public enum EnermyState { None = -1 , Idle = 0, Wander,Pursuit,Attack,}
 public class EnermyFSM2 : MonoBehaviour
 {
     [Header("Pursuit")]
@@ -12,7 +12,17 @@ public class EnermyFSM2 : MonoBehaviour
     [SerializeField]
     private float pursuitlimitRange = 10;
     private EnermyState enermyState = EnermyState.None;
+    [Header("Attack")]
+    [SerializeField]
+    private GameObject projectilePrefab;
+    [SerializeField]
+    private Transform projectileSpawnPoint;
+    [SerializeField]
+    private float attackRange = 5;
+    [SerializeField]
+    private float attackRate = 1;
 
+    private float lastAttackTime = 0;
     private Status status;
     private NavMeshAgent navMeshAgent;
     private Transform target;
@@ -27,7 +37,7 @@ public class EnermyFSM2 : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("생성");
+ 
         ChangeState(EnermyState.Idle);
     }
     private void OnDisable()
@@ -38,7 +48,6 @@ public class EnermyFSM2 : MonoBehaviour
 
     public void ChangeState(EnermyState newState)
     {
-        Debug.Log("상태 변환");
         if (enermyState == newState) return;
         StopCoroutine(enermyState.ToString());
         enermyState = newState;
@@ -87,6 +96,25 @@ public class EnermyFSM2 : MonoBehaviour
         }
             CalculateDistanceToTargetAndSelectState();
              yield return null;
+        }
+    }
+
+    private IEnumerator Attack()
+    {
+        navMeshAgent.ResetPath();
+        while (true)
+        {
+            LookRotationToTarget();
+            CalculateDistanceToTargetAndSelectState();
+            if(Time.time -lastAttackTime > attackRate)
+            {
+                lastAttackTime += Time.time;
+
+                GameObject clone = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+                clone.GetComponent<EnermyProjectile>().Setup(target.position);
+
+            }
+            yield return null;
         }
     }
     private Vector3 CaculateWanderPostion()
@@ -138,7 +166,11 @@ public class EnermyFSM2 : MonoBehaviour
     {
         if (target == null) return;
         float distance = Vector3.Distance(target.position, transform.position);
-        if (distance <= targetRecognitionrange)
+        if(distance <= attackRange)
+        {
+            ChangeState(EnermyState.Attack);
+        }
+        else if (distance <= targetRecognitionrange)
         {
             ChangeState(EnermyState.Pursuit);
         }
@@ -155,6 +187,8 @@ public class EnermyFSM2 : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, targetRecognitionrange);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, pursuitlimitRange);
+        Gizmos.color = new Color(0.39f,0.04f,0.04f);
+        Gizmos.DrawWireSphere(transform.position, attackRange);
 
     }
 

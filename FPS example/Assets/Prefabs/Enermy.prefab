@@ -83,6 +83,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af499b96a3d5b8a4e80642158e9be35c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetRecognitionrange: 8
+  pursuitlimitRange: 10
+  projectilePrefab: {fileID: 125192856131545312, guid: e090a010469245d4f8c9daf90bf0eb85, type: 3}
+  projectileSpawnPoint: {fileID: 1055800916682630869}
+  attackRange: 5
+  attackRate: 1
 --- !u!1 &5757427538512987948
 GameObject:
   m_ObjectHideFlags: 0
