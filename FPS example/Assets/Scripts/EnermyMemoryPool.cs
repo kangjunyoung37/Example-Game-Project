@@ -60,8 +60,12 @@ public class EnermyMemoryPool : MonoBehaviour
         GameObject item = enermyMemoryPool.ActivatepoolItem();
         item.transform.position = point.transform.position;
 
-        item.GetComponent<EnermyFSM2>().Setup(target);
+        item.GetComponent<EnermyFSM2>().Setup(target,this);
         spawnPointMemoryPool.DeactivatePoolItem(point);
+    }
+    public void DeactivateEnermy(GameObject enemy)
+    {
+        enermyMemoryPool.DeactivatePoolItem(enemy);
     }
 
 }

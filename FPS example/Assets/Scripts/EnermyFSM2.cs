@@ -26,12 +26,14 @@ public class EnermyFSM2 : MonoBehaviour
     private Status status;
     private NavMeshAgent navMeshAgent;
     private Transform target;
+    private EnermyMemoryPool enermyMemoryPool;
 
-    public void Setup(Transform target)
+    public void Setup(Transform target, EnermyMemoryPool enermyMemoryPool)
     {
         status = GetComponent<Status>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         this.target = target;
+        this.enermyMemoryPool = enermyMemoryPool;
         navMeshAgent.updateRotation = false;
     }
 
@@ -190,6 +192,14 @@ public class EnermyFSM2 : MonoBehaviour
         Gizmos.color = new Color(0.39f,0.04f,0.04f);
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
+    }
+    public void TakeDamage(int damage)
+    {
+        bool isDie = status.DecreaseHP(damage);
+        if (isDie == true)
+        {
+            enermyMemoryPool.DeactivateEnermy(gameObject);
+        }
     }
 
 }
