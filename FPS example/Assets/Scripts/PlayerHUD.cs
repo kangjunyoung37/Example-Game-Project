@@ -30,6 +30,9 @@ public class PlayerHUD : MonoBehaviour
     private GameObject magaineUIPrefab;
     [SerializeField]
     private Transform magazineParent;
+
+    private List<GameObject> magazineList;
+
     [Header("HP & BloodScreen UI")]
     [SerializeField]
     private TextMeshProUGUI textHP;
@@ -37,10 +40,6 @@ public class PlayerHUD : MonoBehaviour
     private Image imageBloodeScreen;
     [SerializeField]
     private AnimationCurve curveBloodScreen;
- 
-
-
-    private List<GameObject> magazineList;
 
 
 
@@ -93,24 +92,25 @@ public class PlayerHUD : MonoBehaviour
     private void UpdateHPHUD(int previous, int current)
     {
         textHP.text = "HP" + current;
-        if(previous - current > 0)
+
+        if (previous - current >0)
         {
             StopCoroutine("OnBloodScreen");
             StartCoroutine("OnBloodScreen");
         }
+
     }
     private IEnumerator OnBloodScreen()
     {
         float percent = 0;
-        while (percent < 1)
+        while (percent <1)
         {
             percent += Time.deltaTime;
-
             Color color = imageBloodeScreen.color;
             color.a = Mathf.Lerp(1, 0, curveBloodScreen.Evaluate(percent));
             imageBloodeScreen.color = color;
-
             yield return null;
-        }
+
+        }   
     }
 }

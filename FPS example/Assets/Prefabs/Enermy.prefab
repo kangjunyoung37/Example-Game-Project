@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3537069413748595185}
   - component: {fileID: 3501477864661992045}
   - component: {fileID: 4658781767376880987}
-  - component: {fileID: 1309750773987320788}
+  - component: {fileID: 4348106071714620138}
   m_Layer: 0
   m_Name: Enermy
   m_TagString: ImpactEnemy
@@ -48,9 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e9c7c40c19f5144928d70285de5b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onHPEvent:
-    m_PersistentCalls:
-      m_Calls: []
   walkSpeed: 1.5
   runSpeed: 3
   maxHP: 100
@@ -94,7 +91,7 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 1055800916682630869}
   attackRange: 5
   attackRate: 1
---- !u!54 &1309750773987320788
+--- !u!54 &4348106071714620138
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

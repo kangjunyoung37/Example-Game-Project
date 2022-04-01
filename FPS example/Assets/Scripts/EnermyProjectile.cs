@@ -7,8 +7,6 @@ public class EnermyProjectile : MonoBehaviour
     private MovementTransform movement;
     private float projectileDistance = 30;
     private int damage = 5;
-
-
     public void Setup(Vector3 position)
     {
         movement = GetComponent<MovementTransform>();
@@ -33,7 +31,7 @@ public class EnermyProjectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            //Debug.Log("Player Hit");
+            // Debug.Log("Player Hit");
             other.GetComponent<PlayerController>().TakeDamage(damage);
             Destroy(gameObject);
         }

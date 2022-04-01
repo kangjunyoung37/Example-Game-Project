@@ -63,7 +63,7 @@ public class EnermyMemoryPool : MonoBehaviour
         item.GetComponent<EnermyFSM2>().Setup(target,this);
         spawnPointMemoryPool.DeactivatePoolItem(point);
     }
-    public void DeactivateEnermy(GameObject enemy)
+    public void DeactivateEnemy(GameObject enemy)
     {
         enermyMemoryPool.DeactivatePoolItem(enemy);
     }
