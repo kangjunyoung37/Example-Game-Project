@@ -15,7 +15,7 @@ public class ParticleAutoDestroyerByTime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(particle.isPaused == false)
+        if(particle.isPlaying == false)
         {
             Destroy(gameObject);
         }
