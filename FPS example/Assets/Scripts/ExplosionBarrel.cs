@@ -51,7 +51,6 @@ public class ExplosionBarrel : InteractionObject
             if(interaction != null)
             {
                 interaction.TakeDamage(200);
-                continue;
             }
             Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
             if (rigidbody != null)
