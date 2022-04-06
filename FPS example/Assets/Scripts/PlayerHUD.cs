@@ -92,6 +92,7 @@ public class PlayerHUD : MonoBehaviour
     private void UpdateHPHUD(int previous, int current)
     {
         textHP.text = "HP" + current;
+        if (previous <= current) return;
 
         if (previous - current >0)
         {

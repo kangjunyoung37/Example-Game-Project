@@ -17,8 +17,8 @@ public class Target : InteractionObject
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-    }
 
+    }
     public override void TakeDamage(int damage)
     {
         currentHP -= damage;
@@ -26,32 +26,35 @@ public class Target : InteractionObject
         {
             isPossibleHit = false;
             StartCoroutine("OnTargetDown");
+
         }
+
     }
     private IEnumerator OnTargetDown()
     {
         audioSource.clip = clipTargetDown;
         audioSource.Play();
         yield return StartCoroutine(OnAnimation(0, 90));
-
         StartCoroutine("OnTargetUp");
+
     }
     private IEnumerator OnTargetUp()
     {
         yield return new WaitForSeconds(targetUpDelayTime);
-        audioSource.clip = clipTargetUp;
+        audioSource.clip = clipTargetDown;
         audioSource.Play();
-
         yield return StartCoroutine(OnAnimation(90, 0));
         isPossibleHit = true;
+ 
     }
+
     private IEnumerator OnAnimation(float start, float end)
     {
         float percent = 0;
         float current = 0;
         float time = 1;
 
-        while (percent < 1)
+        while(percent < 1)
         {
             current += Time.deltaTime;
             percent = current / time;
@@ -59,6 +62,6 @@ public class Target : InteractionObject
             transform.rotation = Quaternion.Slerp(Quaternion.Euler(start, 0, 0), Quaternion.Euler(end, 0, 0), percent);
             yield return null;
         }
-    }
 
+    }
 }

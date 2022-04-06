@@ -86,6 +86,11 @@ public class WeaponAssaultRiffle : MonoBehaviour
         audioSource.Play();
 
     }
+    public void IncreaseMagazine(int magazine)
+    {
+        weaponSetting.currentMagazine = CurrentMagazine + magazine > MaxMagazine ? MaxMagazine : CurrentMagazine + magazine;
+        onMagazineEvent.Invoke(CurrentMagazine);
+    }
     public void StartWeaponAction(int type = 0)
     {
         if (isReload == true) return;

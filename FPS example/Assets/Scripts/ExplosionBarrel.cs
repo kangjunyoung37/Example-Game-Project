@@ -31,8 +31,8 @@ public class ExplosionBarrel : InteractionObject
 
         Bounds bounds = GetComponent<Collider>().bounds;
         Instantiate(explosionPrefab, new Vector3(bounds.center.x, bounds.min.y, bounds.center.z), transform.rotation);
-        
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+
         foreach(Collider hit in colliders)
         {
             PlayerController player = hit.GetComponent<PlayerController>();
@@ -51,10 +51,12 @@ public class ExplosionBarrel : InteractionObject
             if(interaction != null)
             {
                 interaction.TakeDamage(200);
+
             }
             Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
             if (rigidbody != null)
             {
+
                 rigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
             }
         }
