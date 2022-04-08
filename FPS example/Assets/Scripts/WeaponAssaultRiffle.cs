@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 [System.Serializable]
-public class AmmoEvent : UnityEngine.Events.UnityEvent<int, int> { }
+/*public class AmmoEvent : UnityEngine.Events.UnityEvent<int, int> { }
 [System.Serializable]
-public class MagazineEvent : UnityEngine.Events.UnityEvent<int> { }
-public class WeaponAssaultRiffle : MonoBehaviour
+public class MagazineEvent : UnityEngine.Events.UnityEvent<int> { }*/
+public class WeaponAssaultRiffle : WeaponBase
 {
 
-    [HideInInspector]
+    /*[HideInInspector]
     public AmmoEvent onAmmoEvnet = new AmmoEvent();
     [HideInInspector]
-    public MagazineEvent onMagazineEvent = new MagazineEvent();
+    public MagazineEvent onMagazineEvent = new MagazineEvent();*/
 
 
     [Header("Audio Clips")]
@@ -23,9 +23,9 @@ public class WeaponAssaultRiffle : MonoBehaviour
     [SerializeField]
     private AudioClip audioClipReload;
 
-    [Header("Weapon Setting")]
+    /*[Header("Weapon Setting")]
     [SerializeField]
-    private WeaponSetting weaponSetting;
+    private WeaponSetting weaponSetting;*/
 
     [Header("Spawn Points")]
     [SerializeField]
@@ -42,27 +42,28 @@ public class WeaponAssaultRiffle : MonoBehaviour
     [SerializeField]
     private Image imageAim;
 
-    private float lastAttackTime = 0;
+    /*private float lastAttackTime = 0;
     private bool isReload = false;
-    private bool isAttact = false;
+    private bool isAttact = false;*/
     private bool isModeChage = false;
     private float defaultModeFOV = 60;
     private float aimModeFOV = 30;
 
-    private AudioSource audioSource;
-    private PlayerAnimatorController animator;
+    /*private AudioSource audioSource;
+    private PlayerAnimatorController animator;*/
     private CasingMemoryPool casingMemoryPool;
     private ImpactMemoryPool impackMemoryPool;
     private Camera mainCamera;
 
-    public WeaponName WeaponName => weaponSetting.weaponName;
+    /*public WeaponName WeaponName => weaponSetting.weaponName;
     public int CurrentMagazine => weaponSetting.currentMagazine;
-    public int MaxMagazine => weaponSetting.maxMagazine;
+    public int MaxMagazine => weaponSetting.maxMagazine;*/
 
     public void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-        animator = GetComponentInParent<PlayerAnimatorController>();
+        base.Setup();
+        /*audioSource = GetComponent<AudioSource>();
+        animator = GetComponentInParent<PlayerAnimatorController>();*/
         casingMemoryPool = GetComponent<CasingMemoryPool>();
         weaponSetting.currentMagazine = weaponSetting.maxMagazine;
         weaponSetting.currentAmmo = weaponSetting.maxAmmo;
@@ -73,25 +74,24 @@ public class WeaponAssaultRiffle : MonoBehaviour
     {
         PlaySound(audioClipTakeOutWeapon);
         muzzleFlashEffect.SetActive(false);
-        onAmmoEvnet.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
+        onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
         onMagazineEvent.Invoke(weaponSetting.currentMagazine);
         ResetVariables();
     }
 
-    // Update is called once per frame
-    private void PlaySound(AudioClip clip)
+    /*private void PlaySound(AudioClip clip)
     {
         audioSource.Stop();
         audioSource.clip = clip;
         audioSource.Play();
 
-    }
+    }*/
     public void IncreaseMagazine(int magazine)
     {
         weaponSetting.currentMagazine = CurrentMagazine + magazine > MaxMagazine ? MaxMagazine : CurrentMagazine + magazine;
         onMagazineEvent.Invoke(CurrentMagazine);
     }
-    public void StartWeaponAction(int type = 0)
+    public override void StartWeaponAction(int type = 0)
     {
         if (isReload == true) return;
         if (isModeChage == true) return;
@@ -99,7 +99,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
         {
             if(weaponSetting.inAutomaticeAttack == true)
             {
-                isAttact = true;
+                isAttack = true;
                 StartCoroutine("OnAttackLoop");
             }
             else
@@ -109,19 +109,19 @@ public class WeaponAssaultRiffle : MonoBehaviour
         }
         else
         {
-            if (isAttact == true) return;
+            if (isAttack == true) return;
             StartCoroutine("OnModeChange");
         }
     }
-    public void StopWeaponAction(int type = 0)
+    public override void StopWeaponAction(int type = 0)
     {
         if(type == 0)
         {
-            isAttact = false;
+            isAttack = false;
             StopCoroutine("OnAttackLoop");
         }
     }
-    public void StartReload()
+    public override void StartReload()
     {
         if (isReload == true||weaponSetting.currentMagazine <=0) return;
 
@@ -151,7 +151,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
                 return;
             }
             weaponSetting.currentAmmo--;
-            onAmmoEvnet.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
+            onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
             string animation = animator.AimModeIs == true ? "AimFire" : "Fire";
             animator.Play(animation, -1, 0);
             if (animator.AimModeIs == false )StartCoroutine("OnMuzzleFlashEffect");
@@ -180,7 +180,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
                 onMagazineEvent.Invoke(weaponSetting.currentMagazine);
 
                 weaponSetting.currentAmmo = weaponSetting.maxAmmo;
-                onAmmoEvnet.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
+                onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
 
                 yield break;
             }
@@ -245,7 +245,7 @@ public class WeaponAssaultRiffle : MonoBehaviour
     private void ResetVariables()
     {
         isReload = false;
-        isAttact = false;
+        isAttack = false;
         isModeChage = false;
     }
 }

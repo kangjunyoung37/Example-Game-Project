@@ -18,6 +18,8 @@ public class MemoryPool
 
     public int MaxCount => maxCount;
     public int ActiveCount => activeCount;
+
+    private Vector3 tempPosition = new Vector3(48, 1, 48);
     public MemoryPool(GameObject poolObject)
     {
         maxCount = 0;
@@ -36,6 +38,7 @@ public class MemoryPool
             PoolItem poolItem = new PoolItem();
             poolItem.isActive = false;
             poolItem.gameObject = GameObject.Instantiate(poolObject);
+            poolItem.gameObject.transform.position = tempPosition;
             poolObject.gameObject.SetActive(false);
 
             poolItemList.Add(poolItem);
@@ -88,6 +91,7 @@ public class MemoryPool
             PoolItem poolItem = poolItemList[i];
             if (poolItem.gameObject == removeObject)
             {
+                poolItem.gameObject.transform.position = tempPosition;
                 poolItem.isActive = false;
                 poolItem.gameObject.SetActive(false);
 
@@ -106,6 +110,7 @@ public class MemoryPool
 
             if(poolItem.gameObject != null && poolItem.isActive == true)
             {
+                poolItem.gameObject.transform.position = tempPosition;
                 poolItem.isActive = false;
                 poolItem.gameObject.SetActive(false);
 

@@ -47,7 +47,7 @@ public class PlayerHUD : MonoBehaviour
     {
         SetupWeapon();
         SetupMagazine();
-        weapon.onAmmoEvnet.AddListener(UpdateAmmoHUD);
+        weapon.onAmmoEvent.AddListener(UpdateAmmoHUD);
         weapon.onMagazineEvent.AddListener(UpdateMagazineHUD);
         status.onHPEvent.AddListener(UpdateHPHUD);
     }

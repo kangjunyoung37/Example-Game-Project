@@ -20,7 +20,7 @@ public class EnermyMemoryPool : MonoBehaviour
 
     private int numberOfEnermiesSpawnedAtOnce = 1;
     private Vector2Int mapSize = new Vector2Int(100, 100);
-
+    
     private void Awake()
     {
         spawnPointMemoryPool = new MemoryPool(enermySpawnPointPrefab);

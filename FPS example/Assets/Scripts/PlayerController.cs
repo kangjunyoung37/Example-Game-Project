@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private RotateToMouse rotateToMouse;
     private MovementCharacterController movement;
     private Status status;
-    private PlayerAnimatorController animator;
+    //private PlayerAnimatorController animator;
     private AudioSource audioSource;
     private WeaponAssaultRiffle weapon;
     private void Awake()
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         rotateToMouse = GetComponent<RotateToMouse>();
         movement = GetComponent<MovementCharacterController>();
         status = GetComponent<Status>();
-        animator = GetComponent<PlayerAnimatorController>();
+        //animator = GetComponent<PlayerAnimatorController>();
         audioSource = GetComponent<AudioSource>();
         weapon = GetComponentInChildren<WeaponAssaultRiffle>();
     }
@@ -61,7 +61,8 @@ public class PlayerController : MonoBehaviour
             if (z > 0) isRun = Input.GetKey(keyCodeRun);
 
             movement.MoveSpeed = isRun == true ? status.RunSpeed : status.WalkSpeed;
-            animator.MoveSpeed = isRun == true ? 1 : 0.5f;
+            //animator.MoveSpeed = isRun == true ? 1 : 0.5f;
+            weapon.Animator.MoveSpeed = isRun == true ? 1 : 0.5f;
             audioSource.clip = isRun == true ? audioClipRun : audioClipWalk;
 
             if (audioSource.isPlaying == false)
@@ -74,7 +75,8 @@ public class PlayerController : MonoBehaviour
         {
             
             movement.MoveSpeed = 0;
-            animator.MoveSpeed = 0;
+            //animator.MoveSpeed = 0;
+            weapon.Animator.MoveSpeed = 0;
             if (audioSource.isPlaying == true)
             {
                 audioSource.Stop();
