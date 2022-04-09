@@ -322,6 +322,7 @@ GameObject:
   - component: {fileID: 72385731}
   - component: {fileID: 72385733}
   - component: {fileID: 72385734}
+  - component: {fileID: 72385735}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -342,10 +343,10 @@ Transform:
   m_Children:
   - {fileID: 963194228}
   - {fileID: 30661862}
-  - {fileID: 379338427}
   - {fileID: 2013131746}
-  - {fileID: 1710647403}
+  - {fileID: 379338427}
   - {fileID: 1250252634}
+  - {fileID: 1710647403}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -524,6 +525,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &72385735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72385727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9cc74eb3db63284f8a76225645bf9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 72385730}
+  playerHUD: {fileID: 2012080207}
+  weapons:
+  - {fileID: 30661864}
+  - {fileID: 2013131748}
+  - {fileID: 379338429}
+  - {fileID: 1250252636}
 --- !u!1 &130659215
 GameObject:
   m_ObjectHideFlags: 0
@@ -920,6 +940,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: arms_combat_knife
       objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 100014, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -934,7 +958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2603,6 +2627,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: arms_hand_grenade
       objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 100014, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2617,7 +2645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: 182b7f11db452bc458d35a6c9eced06f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2680,20 +2708,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1250252635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3816df75b18a3cb4dac95dbf0e6bd4cf, type: 3}
+  m_Script: {fileID: 11500000, guid: aef040b3be6689245ae2824f57dc30e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 2
+  weaponType: 3
   weaponSetting:
-    weaponName: 2
-    damage: 50
+    weaponName: 3
+    damage: 200
     currentMagazine: 0
     maxMagazine: 0
-    currentAmmo: 0
-    maxAmmo: 0
+    currentAmmo: 2
+    maxAmmo: 2
     attackRate: 0
     attackDistance: 0
-    inAutomaticeAttack: 1
+    inAutomaticeAttack: 0
   onAmmoEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -3301,7 +3329,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 72385728}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1710647404
 MonoBehaviour:
@@ -3469,15 +3497,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 276824c80f4884f4aa87b9d546d3a0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 30661864}
   status: {fileID: 72385733}
   textWeaponName: {fileID: 357830850}
   imageWeaponIcon: {fileID: 1693430584}
   spritesWeaponIcons:
   - {fileID: 21300044, guid: 5acb27b603af6d44ea6113c4b7b15385, type: 3}
+  - {fileID: 21300010, guid: 5acb27b603af6d44ea6113c4b7b15385, type: 3}
+  - {fileID: 21300038, guid: 5acb27b603af6d44ea6113c4b7b15385, type: 3}
+  - {fileID: 21300022, guid: a1d46cd3f2614cc43be92ab44ea7d819, type: 3}
+  sizeWeaponIcons:
+  - {x: 200, y: 57}
+  - {x: 82.4, y: 57}
+  - {x: 200, y: 37.7}
+  - {x: 47.2, y: 57}
   textAmmo: {fileID: 708861183}
   magaineUIPrefab: {fileID: 4642187242678880259, guid: 0dbee4f1dde981b4dbb8bb95e693aa35, type: 3}
   magazineParent: {fileID: 1253099024}
+  maxMagazineCount: 0
   textHP: {fileID: 431303616}
   imageBloodeScreen: {fileID: 130659217}
   curveBloodScreen:
@@ -3535,7 +3571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: 56ec0b9a5b8762642811ea26a5242e04, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: 56ec0b9a5b8762642811ea26a5242e04, type: 3}
       propertyPath: m_LocalPosition.x

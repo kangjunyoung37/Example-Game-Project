@@ -6,10 +6,10 @@ using TMPro;
 
 public class PlayerHUD : MonoBehaviour
 {
-
+    private WeaponBase weapon;
     [Header("Components")]
-    [SerializeField]
-    private WeaponAssaultRiffle weapon;
+    //[SerializeField]
+    //private WeaponAssaultRiffle weapon;
     [SerializeField]
     private Status status;
 
@@ -20,6 +20,8 @@ public class PlayerHUD : MonoBehaviour
     private Image imageWeaponIcon;
     [SerializeField]
     private Sprite[] spritesWeaponIcons;
+    [SerializeField]
+    private Vector2[] sizeWeaponIcons;
 
     [Header("Ammo")]
     [SerializeField]
@@ -30,6 +32,8 @@ public class PlayerHUD : MonoBehaviour
     private GameObject magaineUIPrefab;
     [SerializeField]
     private Transform magazineParent;
+    [SerializeField]
+    private int maxMagazineCount;
 
     private List<GameObject> magazineList;
 
@@ -45,16 +49,31 @@ public class PlayerHUD : MonoBehaviour
 
     private void Awake()
     {
-        SetupWeapon();
+        /*SetupWeapon();
         SetupMagazine();
         weapon.onAmmoEvent.AddListener(UpdateAmmoHUD);
-        weapon.onMagazineEvent.AddListener(UpdateMagazineHUD);
+        weapon.onMagazineEvent.AddListener(UpdateMagazineHUD);*/
         status.onHPEvent.AddListener(UpdateHPHUD);
+    }
+    public void SetupAllWeapons(WeaponBase[] weapons)
+    {
+        SetupMagazine();
+        for (int i = 0; i< weapons.Length; ++i)
+        {
+            weapons[i].onAmmoEvent.AddListener(UpdateAmmoHUD);
+            weapons[i].onMagazineEvent.AddListener(UpdateMagazineHUD);
+        }
+    }
+    public void SwitchingWeapon(WeaponBase newWeapon)
+    {
+        weapon = newWeapon;
+        SetupWeapon();
     }
     private void SetupWeapon()
     {
         textWeaponName.text = weapon.WeaponName.ToString();
         imageWeaponIcon.sprite = spritesWeaponIcons[(int)weapon.WeaponName];
+        imageWeaponIcon.rectTransform.sizeDelta = sizeWeaponIcons[(int)weapon.WeaponName];
     }
 
     private void UpdateAmmoHUD(int currentAmmo, int maxAmmo)
@@ -64,17 +83,13 @@ public class PlayerHUD : MonoBehaviour
     private void SetupMagazine()
     {
         magazineList = new List<GameObject>();
-        for (int i = 0; i<weapon.MaxMagazine; ++i)
+        for (int i = 0; i<maxMagazineCount; ++i)
         {
             GameObject clone = Instantiate(magaineUIPrefab);
             clone.transform.SetParent(magazineParent);
             clone.SetActive(false);
 
             magazineList.Add(clone);
-        }
-        for(int i = 0; i < weapon.CurrentMagazine; ++i)
-        {
-            magazineList[i].SetActive(true);
         }
     }
     private void UpdateMagazineHUD(int currentMagazine)

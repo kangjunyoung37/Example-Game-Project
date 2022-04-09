@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
     private Status status;
     //private PlayerAnimatorController animator;
     private AudioSource audioSource;
-    private WeaponAssaultRiffle weapon;
+    //private WeaponAssaultRiffle weapon;
+    private WeaponBase weapon;
     private void Awake()
     {
         Cursor.visible = false;
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
         status = GetComponent<Status>();
         //animator = GetComponent<PlayerAnimatorController>();
         audioSource = GetComponent<AudioSource>();
-        weapon = GetComponentInChildren<WeaponAssaultRiffle>();
+        //weapon = GetComponentInChildren<WeaponAssaultRiffle>();
     }
     private void Update()
     {
@@ -124,5 +125,9 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("GameOver");
         }
+    }
+    public void SwitchingWeapon(WeaponBase newWeapon)
+    {
+        weapon = newWeapon;
     }
 }
