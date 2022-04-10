@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class WeaponRevolver : WeaponBase
 {
+    [Header("Fire Effects")]
+    [SerializeField]
+    private GameObject muzzleFlashEffect;
+
+    [Header("spawn Points")]
+    [SerializeField]
+    private Transform bulletSpawnPoint;
     public override void StartWeaponAction(int type = 0)
     {
        
