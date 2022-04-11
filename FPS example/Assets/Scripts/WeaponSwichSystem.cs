@@ -36,6 +36,7 @@ public class WeaponSwichSystem : MonoBehaviour
     private void UpdateSwich()
     {
         if (!Input.anyKeyDown) return;
+        //1에서 4 사이의 숫자키를 누르면 무기 교체
         int inputIndex = 0;
         if (int.TryParse(Input.inputString,out inputIndex)&&(inputIndex>0 && inputIndex < 5))
         {
@@ -44,16 +45,19 @@ public class WeaponSwichSystem : MonoBehaviour
     }
     private void SwitchingWeapon(WeaponType weaponType)
     {
+        //교체 가능한 무기가 없으면 종료
         if (weapons[(int)weaponType] == null)
         {
             return;
         }
+        //현재 사용중인 무기가 있으면 이전 무기 정보에 저장
         if (currentWeapon != null)
         {
             previousWeapon = currentWeapon;
         }
+        //무기교체
         currentWeapon = weapons[(int)weaponType];
-
+        //현재 사용중인 무기교체할려고 하면 리턴
         if(currentWeapon == previousWeapon)
         {
             return;

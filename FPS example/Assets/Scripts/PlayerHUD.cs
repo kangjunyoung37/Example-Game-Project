@@ -60,6 +60,7 @@ public class PlayerHUD : MonoBehaviour
         SetupMagazine();
         for (int i = 0; i< weapons.Length; ++i)
         {
+            
             weapons[i].onAmmoEvent.AddListener(UpdateAmmoHUD);
             weapons[i].onMagazineEvent.AddListener(UpdateMagazineHUD);
         }
