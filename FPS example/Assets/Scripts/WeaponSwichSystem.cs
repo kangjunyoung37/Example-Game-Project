@@ -18,7 +18,6 @@ public class WeaponSwichSystem : MonoBehaviour
     private void Awake()
     {
         playerHUD.SetupAllWeapons(weapons);
-
         for (int i = 0; i < weapons.Length; ++i)
         {
             if(weapons[i].gameObject != null)

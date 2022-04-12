@@ -3622,7 +3622,7 @@ MonoBehaviour:
   textAmmo: {fileID: 708861183}
   magaineUIPrefab: {fileID: 4642187242678880259, guid: 0dbee4f1dde981b4dbb8bb95e693aa35, type: 3}
   magazineParent: {fileID: 1253099024}
-  maxMagazineCount: 0
+  maxMagazineCount: 10
   textHP: {fileID: 431303616}
   imageBloodeScreen: {fileID: 130659217}
   curveBloodScreen:

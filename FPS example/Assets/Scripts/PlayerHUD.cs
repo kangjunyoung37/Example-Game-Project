@@ -60,9 +60,10 @@ public class PlayerHUD : MonoBehaviour
         SetupMagazine();
         for (int i = 0; i< weapons.Length; ++i)
         {
-            
+
             weapons[i].onAmmoEvent.AddListener(UpdateAmmoHUD);
             weapons[i].onMagazineEvent.AddListener(UpdateMagazineHUD);
+
         }
     }
     public void SwitchingWeapon(WeaponBase newWeapon)
@@ -84,6 +85,7 @@ public class PlayerHUD : MonoBehaviour
     private void SetupMagazine()
     {
         magazineList = new List<GameObject>();
+        
         for (int i = 0; i<maxMagazineCount; ++i)
         {
             GameObject clone = Instantiate(magaineUIPrefab);
@@ -91,6 +93,7 @@ public class PlayerHUD : MonoBehaviour
             clone.SetActive(false);
 
             magazineList.Add(clone);
+
         }
     }
     private void UpdateMagazineHUD(int currentMagazine)
