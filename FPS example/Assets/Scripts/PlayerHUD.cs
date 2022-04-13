@@ -60,7 +60,7 @@ public class PlayerHUD : MonoBehaviour
         SetupMagazine();
         for (int i = 0; i< weapons.Length; ++i)
         {
-
+    
             weapons[i].onAmmoEvent.AddListener(UpdateAmmoHUD);
             weapons[i].onMagazineEvent.AddListener(UpdateMagazineHUD);
 
@@ -93,7 +93,6 @@ public class PlayerHUD : MonoBehaviour
             clone.SetActive(false);
 
             magazineList.Add(clone);
-
         }
     }
     private void UpdateMagazineHUD(int currentMagazine)

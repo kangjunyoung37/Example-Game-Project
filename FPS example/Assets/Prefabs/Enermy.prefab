@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 5906852834798603274}
   m_Layer: 0
   m_Name: EnermyBody
-  m_TagString: Untagged
+  m_TagString: ImpactEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
