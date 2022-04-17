@@ -71,5 +71,23 @@ public class WeaponSwichSystem : MonoBehaviour
         currentWeapon.gameObject.SetActive(true);
 
     }
+    public void IncreaseMagazine(WeaponType weaponType,int magazine)
+    {
+        if(weapons[(int)weaponType]!= null)//해당 무기가 있는지 검사
+        {
+            weapons[(int)weaponType].IncreaseMagazine(magazine);// 해당 무기의 탄창 수를 magazine만큼 증가
+        }
+    }
+    public void IncreaseMagazine(int magazine)//소지중인 모든 무기의 탄창 수 증가
+    {
+        for (int i = 0; i<weapons.Length; ++i)
+        {
+            if (weapons[i] != null)
+            {
+                weapons[i].IncreaseMagazine(magazine);
+            }
+        }
+    }
+
 
 }

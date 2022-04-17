@@ -86,11 +86,6 @@ public class WeaponAssaultRiffle : WeaponBase
         audioSource.Play();
 
     }*/
-    public void IncreaseMagazine(int magazine)
-    {
-        weaponSetting.currentMagazine = CurrentMagazine + magazine > MaxMagazine ? MaxMagazine : CurrentMagazine + magazine;
-        onMagazineEvent.Invoke(CurrentMagazine);
-    }
     public override void StartWeaponAction(int type = 0)
     {
         if (isReload == true) return;

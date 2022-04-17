@@ -46,5 +46,9 @@ public abstract class WeaponBase : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         animator = GetComponent<PlayerAnimatorController>();
     }
-   
+   public virtual void IncreaseMagazine(int magazine)
+    {
+        weaponSetting.currentMagazine = CurrentMagazine + magazine > MaxMagazine ? MaxMagazine : CurrentMagazine + magazine;
+        onMagazineEvent.Invoke(CurrentMagazine);
+    }
 }

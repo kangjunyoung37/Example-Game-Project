@@ -56,6 +56,11 @@ public class WeaponGrenade : WeaponBase
         weaponSetting.currentAmmo--;
         onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);//수류탄을 썻으니까 탄 수를 다시 갱신
     }
+    public override void IncreaseMagazine(int ammo)
+    {
+        weaponSetting.currentAmmo = weaponSetting.currentAmmo + ammo > weaponSetting.maxAmmo ? weaponSetting.maxAmmo : weaponSetting.currentAmmo + ammo;
+        onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
+    }
     public override void StopWeaponAction(int type = 0)
     {
 
